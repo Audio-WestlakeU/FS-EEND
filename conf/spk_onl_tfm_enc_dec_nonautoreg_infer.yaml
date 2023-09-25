@@ -1,0 +1,95 @@
+log:
+  model_name: spk_onl_tfm_enc_dec_10w_infer
+  log_dir: !ref ./logs/<log[model_name]>
+  save_top_k: -1
+  start_epoch: 90
+  end_epoch: 99
+  save_avg_path: # !ref /mnt/home/liangdi/projects/pl_version/pl_eend/logs/spk_onl_tfm_enc_dec_10w/version/<model[arch]>_allspk_91_100_avg_model.ckpt
+
+training:
+  batch_size: 1
+  n_workers: 8
+  shuffle: True
+  lr: 1
+  opt: noam                   # [adam, sgd, noam]
+  max_epochs: 100
+  grad_clip: 5
+  grad_accm: 1
+  scheduler: noam
+  schedule_scale: 0.4  # 0.4 # 1.0
+  warm_steps: 20000 # 20000 # 100000
+  early_stop_epoch: 100
+  init_ckpt:  # ckpt path for model initiliazation
+  dist_strategy: # ddp        # [ddp, dp]
+  val_interval: 1             # validation after ? epoch(s) of training
+  seed: 777
+
+model:
+  arch: onlineTransformerDA_emb1dcnn_linear_nonautoreg
+  params:
+    n_units: 256
+    n_heads: 4
+    enc_n_layers: 4
+    dec_dim_feedforward: 2048
+    dropout: 0.1
+    has_mask: True
+    max_seqlen: !ref <data[chunk_size]>
+    mask_delay: 0
+    dec_n_layers: 2
+  
+data:
+  num_speakers:
+  max_speakers: 2 
+  context_recp: 7
+  label_delay: 0  # number of frames delayed from original labels for uni-directional rnn to see in the future
+  feat_type: logmel23_mn # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
+  chunk_size: 10000
+  subsampling: 10
+  use_last_samples: True
+  shuffle: False
+  augment:
+  feat:
+    sample_rate: 8000
+    win_length: 200
+    n_fft: 1024
+    hop_length: 80
+    n_mels: 23
+    f_max: 4000
+    power: 1
+  scaler:
+    statistic: instance # instance or dataset-wide statistic
+    normtype: minmax # minmax or standard or mean normalization
+    dims: [1, 2] # dimensions over which normalization is applied
+
+  train_data_dir: /mnt/home/liangdi/dataset_spkdia/simu_overlap_split_10w/data/swb_sre_ts_ns2_beta2_500  # swb_sre_tr_ns1n2n3n4_beta2n2n5n9_100000 # swb_sre_tr_ns2_beta2_100000  # swb_sre_tr_ns1n2n3n4_beta2n2n2n2_20000
+  val_data_dir: /mnt/home/liangdi/dataset_spkdia/simu_overlap_split_10w/data/swb_sre_ts_ns2_beta2_500      # swb_sre_cv_ns1n2n3n4_beta2n2n5n9_500     # swb_sre_cv_ns2_beta2_500  # swb_sre_cv_ns1n2n3n4_beta2n2n2n2_500
+
+task:
+  max_speakers: 
+  spk_attractor:
+    enable: True
+    shuffle: True
+    enc_dropout: 0.5
+    dec_dropout: 0.5
+    consis_weight: 1  # 0 for not using  
+
+# Used for debugging, how many data would be used in this run
+debug:                
+  num_sanity_val_steps: 3         # Validation steps before training
+  log_every_n_steps: 100          # Frequency of updating logs
+  # flush_logs_every_n_steps: 1     # Frequency of flushing logs
+  # limit_train_batches: 0.1      # How many train data to be used (0-1)
+  # limit_val_batches: 0.1          # How many val data to be used 
+  # limit_test_batches: 0.1       # How many test data to be used 
+
+
+
+
+
+# NOT SURE
+# parser.add_argument('--gradient-accumulation-steps', default=1, type=int) |-> grad_acce
+
+# parser.add_argument('--gpu', '-g', default=-1, type=int,
+#                     help='GPU ID (negative value indicates CPU)')
+# parser.add_argument('--num-frames', default=2000, type=int,
+#                     help='number of frames in one utterance') |-> chunk_size
