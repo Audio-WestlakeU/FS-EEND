@@ -21,7 +21,7 @@ from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from nnet.model.onl_tfm_enc_1dcnn_enc_linear_non_autoreg_pos_enc_l2norm import OnlineTransformerDADiarization
 from utlis.scheduler import NoamScheduler
-from datasets.dummy_dataset import KaldiDiarizationDataset, my_collate
+from datasets.diarization_dataset import KaldiDiarizationDataset, my_collate
 from train.oln_tfm_enc_dec import SpeakerDiarization
 
 import warnings
