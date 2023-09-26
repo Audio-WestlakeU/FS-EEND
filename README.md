@@ -4,6 +4,14 @@ The official Pytorch implementation of "Frame-wise streaming end-to-end speaker 
 
 This work is submitted to ICASSP 2024.
 
+<div>
+    </p>
+    <a href="https://github.com/Audio-WestlakeU/FS-EEND/"><img src="https://img.shields.io/badge/Platform-linux-lightgrey" alt="version"></a>
+    <a href="https://github.com/Audio-WestlakeU/FS-EEND/"><img src="https://img.shields.io/badge/Python-3.9-orange" alt="version"></a>
+    <a href="https://github.com/Audio-WestlakeU/FS-EEND/"><img src="https://img.shields.io/badge/PyTorch-1.13-brightgreen" alt="python"></a>
+    <a href="https://github.com/Audio-WestlakeU/FS-EEND/"><img src="https://img.shields.io/badge/PyTorchLightning-1.8-yellow" alt="python"></a>
+</div>
+
 [Paper :star_struck:](https://arxiv.org/abs/2309.13916) **|** [Issues :sweat_smile:](https://github.com/Audio-WestlakeU/FS-EEND/issues)
  **|** [Lab :hear_no_evil:](https://github.com/Audio-WestlakeU) **|** [Contact :kissing_heart:](liangdi@westlake.edu.cn)
 
@@ -14,3 +22,5 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 <div align="center">
 <image src="/utlis/arch.png"  width="300" alt="The proposed FS-EEND architecture" />
 </div>
+
+# Get start
