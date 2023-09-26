@@ -24,3 +24,4 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 </div>
 
 # Get start
+1. Prepare kaldi-style data and modify conf/XXX.yaml according to your own directories.
