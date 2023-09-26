@@ -29,5 +29,11 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 ```
 git clone https://github.com/Audio-WestlakeU/FS-EEND.git
 ```
-1. Prepare kaldi-style data and modify conf/xxx.yaml according to your own paths.
-2. Start training by
+
+2. Prepare kaldi-style data and modify conf/xxx.yaml according to your own paths.
+
+3. Start training by
+
+```
+python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID
+```
