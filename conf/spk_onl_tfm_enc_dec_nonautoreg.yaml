@@ -25,7 +25,7 @@ training:
   seed: 777
 
 model:
-  arch: onlineTransformerDA_emb1dcnn_linear_nonautoreg_l2norm_wo_cnn
+  arch: onlineTransformerDA_emb1dcnn_linear_nonautoreg_l2norm
   params:
     n_units: 256
     n_heads: 4
