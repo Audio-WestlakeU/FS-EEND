@@ -37,3 +37,5 @@ git clone https://github.com/Audio-WestlakeU/FS-EEND.git
 ```
 python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID
 ```
+
+4. Finetune on CALLHOME data by
