@@ -45,3 +45,8 @@ Finetune on CALLHOME data by
 ```
 python train_dia_fintn.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID
 ```
+5. Inference by
+```
+python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID --test_from_folder YOUR_CKPT_SAVE_DIR
+```
+6. Evaluation
