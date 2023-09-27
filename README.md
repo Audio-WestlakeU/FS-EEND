@@ -23,9 +23,7 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 <image src="/utlis/arch.png"  width="300" alt="The proposed FS-EEND architecture" />
 </div>
 
-# Note
-Our codes are developed based on the original Chainer implementation of offline [EEND](https://github.com/hitachi-speech/EEND) by [Hitachi Ltd.](https://github.com/hitachi-speech) and the Pytorch version [EEND-Pytorch](https://github.com/Xflick/EEND_PyTorch).
-# Get start
+# Get started
 1. Clone the FS-EEND codes by:
 
 ```
@@ -58,3 +56,7 @@ python gen_h5_output.py
 #calculate DERs
 python metrics.py --configs conf/xxx_infer.yaml
 ```
+
+# Performance
+[EEND](https://github.com/hitachi-speech/EEND) by [Hitachi Ltd.](https://github.com/hitachi-speech)
+[EEND-Pytorch](https://github.com/Xflick/EEND_PyTorch).
