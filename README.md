@@ -24,7 +24,7 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 </div>
 
 # Note
-Our codes are developed based on the original Chainer implementation of offline [EEND](https://github.com/hitachi-speech/EEND) and the Pytorch version [EEND-Pytorch](https://github.com/Xflick/EEND_PyTorch)
+Our codes are developed based on the original Chainer implementation of offline [EEND](https://github.com/hitachi-speech/EEND) by [hitachi Ltd.](https://github.com/hitachi-speech) and the Pytorch version [EEND-Pytorch](https://github.com/Xflick/EEND_PyTorch).
 # Get start
 1. Clone the FS-EEND codes by:
 
