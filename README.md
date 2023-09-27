@@ -32,12 +32,13 @@ Our codes are developed based on the original Chainer implementation of offline 
 git clone https://github.com/Audio-WestlakeU/FS-EEND.git
 ```
 
-2. Prepare kaldi-style data and modify conf/xxx.yaml according to your own paths.
+2. Prepare kaldi-style data by referring to [here](https://github.com/hitachi-speech/EEND/blob/master/egs/callhome/v1/run_prepare_shared.sh). Modify conf/xxx.yaml according to your own paths.
 
-3. Start training by
+3. Start training on simulated data by
 
 ```
 python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID
 ```
 
 4. Finetune on CALLHOME data by
+
