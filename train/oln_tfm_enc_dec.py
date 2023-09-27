@@ -196,15 +196,15 @@ class SpeakerDiarization(pl.LightningModule):
         preds = [torch.cat([p[label_delay:, 1:], p[-1, 1:].unsqueeze(0).repeat(label_delay, 1)], dim=0)  for p in preds]
         num_spks = "2"
         version = "_tfm_10w_ver_0"
-        save_dir_parnt = f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}"
-        for content in ["preds", "labels", "embs", "attractors"]:
-            save_dir = os.path.join(save_dir_parnt, content)
-            if not os.path.isdir(save_dir):
-                os.makedirs(save_dir)
-        np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/preds/{rec[0]}.npy", preds[0].detach().cpu().numpy())
-        np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/labels/label_{rec[0]}.npy", labels_realspk[0].detach().cpu().numpy())
-        np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/embs/emb_{rec[0]}.npy", embs[0].detach().cpu().numpy())
-        np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/attractors/attractor_{rec[0]}.npy", attractors[0].detach().cpu().numpy())
+        # save_dir_parnt = f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}"
+        # for content in ["preds", "labels", "embs", "attractors"]:
+        #     save_dir = os.path.join(save_dir_parnt, content)
+        #     if not os.path.isdir(save_dir):
+        #         os.makedirs(save_dir)
+        # np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/preds/{rec[0]}.npy", preds[0].detach().cpu().numpy())
+        # np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/labels/label_{rec[0]}.npy", labels_realspk[0].detach().cpu().numpy())
+        # np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/embs/emb_{rec[0]}.npy", embs[0].detach().cpu().numpy())
+        # np.save(f"/mnt/home/liangdi/projects/pl_version/pl_eend_nonautoreg/tsne_visual/data/onl_{num_spks}spk_version{version}/attractors/attractor_{rec[0]}.npy", attractors[0].detach().cpu().numpy())
         return stats
 
     def test_epoch_end(self, test_step_outputs) -> None:
