@@ -60,5 +60,5 @@ python metrics.py --configs conf/xxx_infer.yaml
 # Performance
 
 # Reference code
-- <a href="(https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
+- <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
 - <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a> 
