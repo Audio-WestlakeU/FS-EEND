@@ -70,6 +70,7 @@ Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speake
 | CH3spk | 14.6 | same as above |
 | CH4spk | 21.2 | same as above |
 
+The ckpts are the average of model parameters for the last epochs.
 
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
