@@ -70,8 +70,23 @@ Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speake
 | CH3spk | 14.6 | same as above |
 | CH4spk | 21.2 | same as above |
 
-The ckpts are the average of model parameters for the last epochs.
+The ckpts are the average of model parameters for the last 10 epochs.
 
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
-- <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a> 
+- <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a>
+
+# Citation
+
+If you want to cite this paper:
+
+```
+@misc{liang2023framewise,
+      title={Frame-wise streaming end-to-end speaker diarization with non-autoregressive self-attention-based attractors}, 
+      author={Di Liang and Nian Shao and Xiaofei Li},
+      year={2023},
+      eprint={2309.13916},
+      archivePrefix={arXiv},
+      primaryClass={eess.AS}
+}
+```
