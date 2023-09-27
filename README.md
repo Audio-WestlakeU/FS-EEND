@@ -62,11 +62,11 @@ Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speake
 
 | Dataset | DER(%) |ckpt|
 | :--------: | :--: | :--: | 
-| Simu1spk | 0.6 | [simu_avg_41_50epo.ckpt] (https://drive.google.com/file/d/1hBRsNfKtFMOkAfHl8uNbjhf6CvoUVdiG/view?usp=sharing) |
+| Simu1spk | 0.6 | [simu_avg_41_50epo.ckpt](https://drive.google.com/file/d/1hBRsNfKtFMOkAfHl8uNbjhf6CvoUVdiG/view?usp=sharing) |
 | Simu2spk | 5.1 | same as above |
 | Simu3spk | 11.1 | same as above |
 | Simu4spk | 15.8 | same as above |
-| CH2spk | 10.1 | [ch_avg_91_100epo.ckpt] (https://drive.google.com/file/d/12nQIaWx1KlC_OVF9A9JQDnqkd1_bOg85/view?usp=sharing) |
+| CH2spk | 10.1 | [ch_avg_91_100epo.ckpt](https://drive.google.com/file/d/12nQIaWx1KlC_OVF9A9JQDnqkd1_bOg85/view?usp=sharing) |
 | CH3spk | 14.6 | same as above |
 | CH4spk | 21.2 | same as above |
 
