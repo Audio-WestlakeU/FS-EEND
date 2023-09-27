@@ -55,7 +55,8 @@ python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID --tes
 cd visualize
 python gen_h5_output.py
 ```  
-7.2 calculate DERs
+  
+  7.2 calculate DERs
 ```
 python metrics.py --configs conf/xxx_infer.yaml
 ```
