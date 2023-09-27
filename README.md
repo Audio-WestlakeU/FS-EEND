@@ -49,4 +49,9 @@ python train_dia_fintn.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome
 ```
 python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
-6. Evaluation
+6. Evaluation  
+6.1 generate speech activity probability (diarization results) by
+ ```
+cd visualize
+python gen_h5_output.py
+```
