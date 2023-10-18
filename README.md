@@ -41,7 +41,7 @@ python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YO
 4. Modify your pretrained model path in conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml.
 5. Finetune on CALLHOME data by
 ```
-python train_dia_fintn.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID
+python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID
 ```
 6. Inference by
 ```
