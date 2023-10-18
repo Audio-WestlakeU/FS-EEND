@@ -1,0 +1,12 @@
+pytorch-lightning==1.8.2
+torch>=1.13.0
+pyyaml
+hyperpyyaml
+librosa
+soundfile
+scipy
+torchaudio
+torchmetrics
+h5py
+pyannote.metrics
+pyannote.core
