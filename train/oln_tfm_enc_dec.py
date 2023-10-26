@@ -218,7 +218,7 @@ class SpeakerDiarization(pl.LightningModule):
         stats_avg = {k: sum(v)/len(v) for k, v in stats_holder.items()}
         stats_avg["DER"] = stats_avg["diarization_error"] / stats_avg["speaker_scored"]
         results = {
-            "test/DER": stats_avg['DER'],
+            "test/preliminary_DER": stats_avg['DER'],
             "test/speech_scored": stats_avg['speech_scored'],
             "test/speech_miss": stats_avg['speech_miss'],
             "test/speech_falarm": stats_avg['speech_falarm'],
