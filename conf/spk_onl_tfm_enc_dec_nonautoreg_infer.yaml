@@ -2,8 +2,8 @@ log:
   model_name: spk_onl_tfm_enc_dec_10w_infer
   log_dir: !ref ./logs/<log[model_name]>
   save_top_k: -1
-  start_epoch: 90
-  end_epoch: 99
+  start_epoch: 40
+  end_epoch: 49
   save_avg_path: # !ref /mnt/home/liangdi/projects/pl_version/pl_eend/logs/spk_onl_tfm_enc_dec_10w/version/<model[arch]>_allspk_91_100_avg_model.ckpt
 
 training:
