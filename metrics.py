@@ -9,7 +9,7 @@ from scipy.signal import medfilt
 from argparse import ArgumentParser
 from pyannote.core import Segment, Timeline, Annotation
 from pyannote.metrics.diarization import DiarizationErrorRate
-from datasets.dummy_dataset import KaldiDiarizationDataset
+from datasets.diarization_dataset import KaldiDiarizationDataset
 
 
 def gen_ref(configs, hyp_dir, metric, threshold=0.5, median=11, subsampling=10):
