@@ -72,6 +72,23 @@ Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speake
 
 The ckpts are the average of model parameters for the last 10 epochs.
 
+If you want to check the performance of ckpt on CALLHOME:
+```
+python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
+```
+Note the modification of the code
+```
+ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x) and int(x.split("=")[1].split("-")[0])>=configs["log"]["start_epoch"] and int(x.split("=")[1].split("-")[0])<=configs["log"]["end_epoch"]]
+
+state_dict = torch.load(test_folder + "/" + c, map_location="cpu")["state_dict"]
+```
+to
+```
+ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x)]
+
+state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
+```
+
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
 - <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a>
