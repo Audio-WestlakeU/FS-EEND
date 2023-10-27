@@ -165,7 +165,7 @@ def train(configs, gpus, checkpoint_resume, test_folder=None):
     # Test step: given the folder and average the models in the given folder
     for _, _, files in os.walk(test_folder):
         all_files = files
-    # ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x)]
+    # ckpts = [x for x in all_files if (".ckpt" in x)]
     ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x) and int(x.split("=")[1].split("-")[0])>=configs["log"]["start_epoch"] and int(x.split("=")[1].split("-")[0])<=configs["log"]["end_epoch"]]
 
     # [os.remove(test_folder + "/" + x) for x in all_files if (".ckpt" in x) and ("epoch" in x) and (int(x.split("=")[1].split("-")[0])<=39 or int(x.split("=")[1].split("-")[0])>=50 and int(x.split("=")[1].split("-")[0])<=89)]
