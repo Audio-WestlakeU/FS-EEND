@@ -84,7 +84,7 @@ state_dict = torch.load(test_folder + "/" + c, map_location="cpu")["state_dict"]
 ```
 to
 ```
-ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x)]
+ckpts = [x for x in all_files if (".ckpt" in x)]
 
 state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
 ```
