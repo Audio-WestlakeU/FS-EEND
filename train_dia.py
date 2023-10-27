@@ -174,7 +174,8 @@ def train(configs, gpus, checkpoint_resume, test_folder=None):
     [print(test_folder + "/" + x) for x in ckpts]
     test_state = defaultdict(float)
     for c in ckpts:
-        state_dict = torch.load(test_folder + "/" + c, map_location=torch.device("cuda:{}".format(gpus[0])))["state_dict"]
+        # state_dict = torch.load(test_folder + "/" + c, map_location=torch.device("cuda:{}".format(gpus[0])))["state_dict"]
+        state_dict = torch.load(test_folder + "/" + c, map_location="cpu")["state_dict"]
         for name, param in state_dict.items():
             test_state[name] += param / len(ckpts)
 
