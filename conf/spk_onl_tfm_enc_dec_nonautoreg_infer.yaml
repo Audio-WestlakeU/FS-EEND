@@ -42,7 +42,7 @@ data:
   max_speakers: 2 
   context_recp: 7
   label_delay: 0  # number of frames delayed from original labels for uni-directional rnn to see in the future
-  feat_type: logmel23_mn # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
+  feat_type: logmel23 # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
   chunk_size: 10000
   subsampling: 10
   use_last_samples: True
