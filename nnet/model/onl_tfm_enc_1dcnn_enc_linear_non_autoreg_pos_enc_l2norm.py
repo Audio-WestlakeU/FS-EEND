@@ -139,6 +139,7 @@ class MaskedTransformerEncoderModel(nn.Module):
         self.max_seqlen = max_seqlen
         self.mask_delay = mask_delay
 
+        self.bn = nn.BatchNorm1d(in_size)
         self.encoder = nn.Linear(in_size, n_units)
         self.encoder_norm = nn.LayerNorm(n_units)
         if self.has_pos:
@@ -162,6 +163,7 @@ class MaskedTransformerEncoderModel(nn.Module):
 
         ilens = [x.shape[0] for x in src]
         src = nn.utils.rnn.pad_sequence(src, padding_value=-1, batch_first=True)
+        src = self.bn(src.transpose(1, 2)).transpose(1, 2)
 
         src_mask = None
         if self.has_mask:
