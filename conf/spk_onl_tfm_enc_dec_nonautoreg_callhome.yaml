@@ -19,7 +19,7 @@ training:
   schedule_scale:
   warm_steps:
   early_stop_epoch: 100
-  init_ckpt: /data/home/liangdi/dia_projects/pl_version/pl_eend_2.11/logs/spk_onl_tfm_enc_dec_10w/version_37/onlineTransformerDA_emb1dcnn_linear_nonautoreg_allspk_41_50_avg_model.ckpt # ckpt path for model initiliazation
+  init_ckpt: /mnt/home/liangdi/projects/pl_version/pl_eend/logs/spk_onl_tfm_enc_dec_10w/version_113/onlineTransformerDA_emb1dcnn_linear_nonautoreg_allspk_41_50_avg_model.ckpt # ckpt path for model initiliazation
   dist_strategy: # ddp        # [ddp, dp]
   val_interval: 1             # validation after ? epoch(s) of training
   seed: 777
@@ -42,7 +42,7 @@ data:
   max_speakers: 4 
   context_recp: 7
   label_delay: 0  # number of frames delayed from original labels for uni-directional rnn to see in the future
-  feat_type: logmel23_mn # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
+  feat_type: logmel23 # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
   chunk_size: 2000
   subsampling: 10
   use_last_samples: True
