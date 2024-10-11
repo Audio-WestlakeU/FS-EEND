@@ -98,12 +98,10 @@ state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
 If you want to cite this paper:
 
 ```
-@misc{liang2023framewise,
-      title={Frame-wise streaming end-to-end speaker diarization with non-autoregressive self-attention-based attractors}, 
-      author={Di Liang and Nian Shao and Xiaofei Li},
-      year={2023},
-      eprint={2309.13916},
-      archivePrefix={arXiv},
-      primaryClass={eess.AS}
-}
+@INPROCEEDINGS{10446568,
+  author={Liang, Di and Shao, Nian and Li, Xiaofei},
+  booktitle={ICASSP 2024 - 2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
+  title={Frame-Wise Streaming end-to-end Speaker Diarization with Non-Autoregressive Self-Attention-Based Attractors}, 
+  year={2024},
+  pages={10521-10525}}
 ```
