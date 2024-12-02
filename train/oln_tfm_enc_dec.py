@@ -267,7 +267,7 @@ class SpeakerDiarization(pl.LightningModule):
     def test_dataloader(self):
         return DataLoader(
             self.datasets["val"],
-            batch_size=self.hparams["training"]["batch_size"],
+            batch_size=1,
             shuffle=False,
             num_workers=self.hparams["training"]["n_workers"],
             collate_fn=self.collate_func
