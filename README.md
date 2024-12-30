@@ -91,6 +91,13 @@ ckpts = [x for x in all_files if (".ckpt" in x)]
 state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
 ```
 
+# Update 2024/12/30
+Upload our implementation of [EEND-EDA](https://arxiv.org/abs/2106.10654) and [EEND-EDA+FLEX-STB](https://arxiv.org/abs/2101.08473)
+```
+python train_offl_eend_eda.py --configs conf/spk_offl_eend_eda.yaml --gpus YOUR_DEVICE_ID
+python train_STB.py --configs conf/spk_STB.yaml --gpus YOUR_DEVICE_ID --test_from_folder YOUR_CKPT_SAVE_DIR
+```
+
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
 - <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a>
