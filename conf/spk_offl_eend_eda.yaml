@@ -1,0 +1,93 @@
+log:
+  model_name: spk_offl_eend_eda
+  log_dir: !ref ./logs/<log[model_name]>
+  save_top_k: -1
+  start_epoch: 90
+  end_epoch: 99
+  save_avg_path: # !ref <log[log_dir]>/version_6/<model[arch]>_2spk_91_100_avg_model.ckpt
+
+training:
+  batch_size: 32
+  n_workers: 8
+  shuffle: true
+  lr: 1
+  opt: noam                   # [adam, sgd, noam]
+  max_epochs: 100
+  grad_clip: 5
+  grad_accm: 1
+  scheduler: noam
+  schedule_scale: 1.0 # 0.4
+  warm_steps: 100000 # 20000
+  early_stop_epoch: 100
+  init_ckpt:  # ckpt path for model initiliazation
+  dist_strategy: ddp_find_unused_parameters_false           # [ddp, dp]
+  val_interval: 1             # validation after ? epoch(s) of training
+  seed: 777
+
+model:
+  arch: TransformerEDA
+  params:
+    n_units: 256
+    n_heads: 4
+    n_layers: 4
+    dropout: 0.1
+    attractor_loss_ratio: 1.0
+    attractor_encoder_dropout: 0.1
+    attractor_decoder_dropout: 0.1
+
+
+data:
+  num_speakers:
+  context_recp: 7
+  label_delay: 0  # number of frames delayed from original labels for uni-directional rnn to see in the future
+  feat_type: logmel23_mn # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
+  chunk_size: 500
+  subsampling: 10
+  use_last_samples: True
+  shuffle: True
+  augment:
+  feat:
+    sample_rate: 8000
+    win_length: 200
+    n_fft: 1024
+    hop_length: 80
+    n_mels: 23
+    f_max: 4000
+    power: 1
+  scaler:
+    statistic: instance # instance or dataset-wide statistic
+    normtype: minmax # minmax or standard or mean normalization
+    dims: [1, 2] # dimensions over which normalization is applied
+
+  train_data_dir:  ./data/swb_sre_tr_ns2_beta2_100000 
+  val_data_dir:  ./data/swb_sre_cv_ns2_beta2_500  
+
+task:
+  max_speakers: 4
+  spk_attractor:
+    enable: True
+    shuffle: True
+    enc_dropout: 0.5
+    dec_dropout: 0.5
+    consis_weight: 1  # 0 for not using  
+
+# Used for debugging, how many data would be used in this run
+debug:                
+  num_sanity_val_steps: 3         # Validation steps before training
+  log_every_n_steps: 100          # Frequency of updating logs
+  # flush_logs_every_n_steps: 1     # Frequency of flushing logs
+  # limit_train_batches: 0.1      # How many train data to be used (0-1)
+  # limit_val_batches: 0.1          # How many val data to be used 
+  # limit_test_batches: 0.1       # How many test data to be used 
+
+
+
+
+
+# NOT SURE
+# parser.add_argument('--gradient-accumulation-steps', default=1, type=int) |-> grad_acce
+
+# parser.add_argument('--gpu', '-g', default=-1, type=int,
+#                     help='GPU ID (negative value indicates CPU)')
+# parser.add_argument('--num-frames', default=2000, type=int,
+#                     help='number of frames in one utterance') |-> chunk_size
