@@ -37,17 +37,17 @@ git clone https://github.com/Audio-WestlakeU/FS-EEND.git
 3. Start training on simulated data by
 
 ```
-python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID
+python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID,
 ```
 
 4. Modify your pretrained model path in conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml.
 5. Finetune on CALLHOME data by
 ```
-python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID
+python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID,
 ```
 6. Inference by (# modify your own path to save predictions in test_step in train/oln_tfm_enc_decxxx.py.)
 ```
-python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
 7. Evaluation
  ```
@@ -91,11 +91,11 @@ ckpts = [x for x in all_files if (".ckpt" in x)]
 state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
 ```
 
-# Update 2024/12/30
+# Update
 Upload our implementation of [EEND-EDA](https://arxiv.org/abs/2106.10654) and [EEND-EDA+FLEX-STB](https://arxiv.org/abs/2101.08473)
 ```
-python train_offl_eend_eda.py --configs conf/spk_offl_eend_eda.yaml --gpus YOUR_DEVICE_ID
-python train_STB.py --configs conf/spk_STB.yaml --gpus YOUR_DEVICE_ID --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_offl_eend_eda.py --configs conf/spk_offl_eend_eda.yaml --gpus YOUR_DEVICE_ID,
+python train_STB.py --configs conf/spk_STB.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
 
 # Reference code
