@@ -16,7 +16,7 @@ from functools import partial
 from collections import defaultdict
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
-from nnet.offl_tfm_enc_lstm_enc_dec import TransformerEDADiarization
+from nnet.model.offl_tfm_enc_lstm_enc_dec import TransformerEDADiarization
 from utlis.scheduler import NoamScheduler
 from datasets.diarization_dataset import KaldiDiarizationDataset, my_collate
 from train.offl_tfm_lstm import SpeakerDiarization
