@@ -8,7 +8,7 @@ from collections import defaultdict
 from pprint import pprint
 from torch.utils.data import DataLoader
 from torchaudio.transforms import MelSpectrogram, AmplitudeToDB
-from .utils.loss import batch_pit_n_speaker_loss, pit_loss_multispk, report_diarization_error, standard_loss, pad_labels, pad_preds
+from .utils.loss import batch_pit_n_speaker_loss, report_diarization_error, standard_loss, pad_labels, pad_preds
 from .utils.utils import ContextBuilder, TorchScaler
 
 import time
