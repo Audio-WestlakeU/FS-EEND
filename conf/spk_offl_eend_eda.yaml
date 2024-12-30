@@ -7,7 +7,7 @@ log:
   save_avg_path: # !ref <log[log_dir]>/version_6/<model[arch]>_2spk_91_100_avg_model.ckpt
 
 training:
-  batch_size: 32
+  batch_size: 64
   n_workers: 8
   shuffle: true
   lr: 1
