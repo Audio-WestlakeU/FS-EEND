@@ -239,6 +239,27 @@ class SpeakerDiarization(pl.LightningModule):
         for key in results.keys():
             self.log(key, results[key], prog_bar=True, logger=False)
 
+    def predict_step(self, batch, batch_index):
+        feats, rec = batch
+        # Model pred
+        clip_lengths = [x.shape[0] for x in feats]
+
+        preds, embs, attractors = self.model.test(feats, clip_lengths, self.max_spks + 2)
+        # pit_loss, perm_labels = self.loss_func1(preds, labels)
+        # pit_loss = self.loss_func2(preds, labels)
+        # tot_loss = pit_loss + attr_loss + emb_loss
+
+        label_delay = self.hparams["data"]["label_delay"]
+        preds = [torch.cat([p[label_delay:, 1:], p[-1, 1:].unsqueeze(0).repeat(label_delay, 1)], dim=0)  for p in preds]
+        num_spks = "4"
+        version = "_tfm_10w_ver_0_pred"
+        save_dir_parnt = f"./tsne_visual/data/onl_{num_spks}spk_version{version}"
+        for content in ["preds", "labels", "embs", "attractors"]:
+            save_dir = os.path.join(save_dir_parnt, content)
+            if not os.path.isdir(save_dir):
+                os.makedirs(save_dir)
+        # np.save(f"{save_dir_parnt}/preds/{rec[0]}.npy", preds[0].detach().cpu().numpy())
+        return preds[0]
 
     def configure_optimizers(self):
         if self.scheduler is not None:
@@ -265,6 +286,16 @@ class SpeakerDiarization(pl.LightningModule):
         )
     
     def test_dataloader(self):
+        return DataLoader(
+            self.datasets["val"],
+            batch_size=1,
+            shuffle=False,
+            num_workers=self.hparams["training"]["n_workers"],
+            collate_fn=self.collate_func
+        )
+    
+    def predict_dataloader(self):
+        print("predic dataloader")
         return DataLoader(
             self.datasets["val"],
             batch_size=1,
