@@ -65,26 +65,18 @@ class KaldiDiarizationDataset(torch.utils.data.Dataset):
 
         # make chunk indices: filepath, start_frame, end_frame
         for rec in self.data.wavs:
-            data_len = int(self.data.reco2dur[rec] * rate / frame_shift)
-            data_len = int(data_len / self.subsampling)
-            for st, ed in _gen_frame_indices(
-                    data_len, chunk_size, chunk_size, use_last_samples,
-                    label_delay=self.label_delay,
-                    subsampling=self.subsampling):
                 self.chunk_indices.append(
-                        (rec, st * self.subsampling, ed * self.subsampling))
+                        (rec))
         print(len(self.chunk_indices), " chunks")
 
     def __len__(self):
         return len(self.chunk_indices)
 
     def __getitem__(self, i):
-        rec, st, ed = self.chunk_indices[i]
+        rec = self.chunk_indices[i]
         Y = get_STFT(
             self.data,
             rec,
-            st,
-            ed,
             self.frame_size,
             self.frame_shift,
             self.n_speakers)
