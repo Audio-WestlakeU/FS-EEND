@@ -328,7 +328,7 @@ def get_ET(
 
 def get_STFT(
         kaldi_obj,
-        rec, start, end, frame_size, frame_shift,
+        rec, frame_size, frame_shift,
         n_speakers=None,
         use_speaker_id=False):
     """ Extracts STFT
@@ -338,8 +338,6 @@ def get_STFT(
     Args:
         kaldi_obj (KaldiData)
         rec (str): recording id
-        start (int): start frame index
-        end (int): end frame index
         frame_size (int): number of samples in a frame
         frame_shift (int): number of shift samples
         n_speakers (int): number of speakers
@@ -349,6 +347,7 @@ def get_STFT(
             (n_frames, n_bins)-shaped np.complex64 array
     """
     data, rate = kaldi_obj.load_wav(
-            rec, start * frame_shift, end * frame_shift)
+            rec)
     Y = stft(data, frame_size, frame_shift)
     return Y
+
