@@ -10,7 +10,7 @@ from torch.utils.data import DataLoader
 from torchaudio.transforms import MelSpectrogram, AmplitudeToDB
 from .utils.loss import batch_pit_n_speaker_loss, report_diarization_error, standard_loss
 from .utils.utils import ContextBuilder, TorchScaler
-from.utils.make_rttm import make_rttm
+from .utils.make_rttm import make_rttm
 
 
 import time
