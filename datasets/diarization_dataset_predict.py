@@ -9,6 +9,8 @@ import torch
 import numpy as np
 from .kaldi_data import KaldiData
 from .feature import *
+from glob import glob
+import soundfile as sf
 
 def _count_frames(data_len, size, step):
     # no padding at edges, last remaining samples are ignored
@@ -61,25 +63,19 @@ class KaldiDiarizationDataset(torch.utils.data.Dataset):
         self.label_delay = label_delay
         self.shuffle = shuffle
 
-        self.data = KaldiData(self.data_dir)
+        self.wavs = glob(f"{data_dir}/**/*.flac", recursive=True) + glob(f"{data_dir}/**/*.wav", recursive=True)
 
         # make chunk indices: filepath, start_frame, end_frame
-        for rec in self.data.wavs:
-                self.chunk_indices.append(
-                        (rec))
-        print(len(self.chunk_indices), " chunks")
+        print(len(self.wavs), " wavs")
 
     def __len__(self):
-        return len(self.chunk_indices)
+        return len(self.wavs)
 
     def __getitem__(self, i):
-        rec = self.chunk_indices[i]
-        Y = get_STFT(
-            self.data,
-            rec,
-            self.frame_size,
-            self.frame_shift,
-            self.n_speakers)
+        wav_path = self.wavs[i]
+        rec = wav_path.split('/')[-1].split('.')[0]
+        data, rate = sf.read(wav_path, dtype='float32')
+        Y = stft(data, self.frame_size, self.frame_shift)
         # Y: (frame, num_ceps)
         Y = transform(Y, self.input_transform)
         # Y_spliced: (frame, num_ceps * (context_size * 2 + 1))
