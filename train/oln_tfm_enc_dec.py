@@ -254,7 +254,7 @@ class SpeakerDiarization(pl.LightningModule):
         preds = [torch.cat([p[label_delay:, 1:], p[-1, 1:].unsqueeze(0).repeat(label_delay, 1)], dim=0)  for p in preds]
         num_spks = "4"
         version = "_tfm_10w_ver_0_pred"
-        save_dir_parnt = f"/mnt/home/liangdi/projects/stream_infer/FS-EEND//tsne_visual/data/onl_{num_spks}spk_version{version}"
+        save_dir_parnt = f"./data/onl_{num_spks}spk_version{version}"
         for content in ["preds", "labels", "embs", "attractors"]:
             save_dir = os.path.join(save_dir_parnt, content)
             if not os.path.isdir(save_dir):
