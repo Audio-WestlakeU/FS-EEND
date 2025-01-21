@@ -253,12 +253,19 @@ class SpeakerDiarization(pl.LightningModule):
         preds = [torch.cat([p[label_delay:, 1:], p[-1, 1:].unsqueeze(0).repeat(label_delay, 1)], dim=0)  for p in preds]
         num_spks = "4"
         version = "_tfm_10w_ver_0_pred"
-        save_dir_parnt = f"./tsne_visual/data/onl_{num_spks}spk_version{version}"
+        save_dir_parnt = f"/mnt/home/liangdi/projects/stream_infer/FS-EEND//tsne_visual/data/onl_{num_spks}spk_version{version}"
         for content in ["preds", "labels", "embs", "attractors"]:
             save_dir = os.path.join(save_dir_parnt, content)
             if not os.path.isdir(save_dir):
                 os.makedirs(save_dir)
-        # np.save(f"{save_dir_parnt}/preds/{rec[0]}.npy", preds[0].detach().cpu().numpy())
+        pred = torch.sigmoid(preds[0]).detach().cpu()
+        make_rttm(rec=rec[0],
+                  pred=pred,
+                  frame_shift=self.hparams["data"]["feat"]["hop_length"],
+                  subsampling=self.hparams["data"]["subsampling"],
+                  sampling_rate=self.hparams["data"]["feat"]["sample_rate"],
+                  out_rttm_file=f"{save_dir_parnt}/rttm")
+
         return preds[0]
 
     def configure_optimizers(self):
