@@ -91,36 +91,3 @@ class KaldiDiarizationDataset(torch.utils.data.Dataset):
             Y_ss = Y_ss[order]
         
         return Y_ss, rec
-    
-    def __getfulllabel__(self, i):
-        rec, st, ed = self.chunk_indices[i]
-        Y, T = get_labeledSTFT(
-            self.data,
-            rec,
-            st,
-            ed,
-            self.frame_size,
-            self.frame_shift,
-            self.n_speakers)
-        # Y: (frame, num_ceps)
-        Y = transform(Y, self.input_transform)
-        # Y_spliced: (frame, num_ceps * (context_size * 2 + 1))
-        Y_spliced = splice(Y, self.context_size)
-        # Y_ss: (frame / subsampling, num_ceps * (context_size * 2 + 1))
-        Y_ss, T_ss = subsample(Y_spliced, T, self.subsampling)
-        T_ss = torch.from_numpy(T_ss).float()
-        T = torch.from_numpy(T).float()
-        return T, rec
-    
-    def __get_len__(self, i):
-        rec, st, ed = self.chunk_indices[i]
-        Y, T = get_labeledSTFT(
-            self.data,
-            rec,
-            st,
-            ed,
-            self.frame_size,
-            self.frame_shift,
-            self.n_speakers)
-        T = torch.from_numpy(T).float()
-        return T.shape[0]
