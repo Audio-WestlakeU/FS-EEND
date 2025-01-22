@@ -351,3 +351,16 @@ def get_STFT(
     Y = stft(data, frame_size, frame_shift)
     return Y
 
+def extract_fbank(wav_path, context_size=7, frame_size=200, frame_shift=80, input_transform=None, subsampling=10):
+    data, rate = sf.read(wav_path, dtype='float32')
+    Y = stft(data, frame_size, frame_shift)
+    # Y: (frame, num_ceps)
+    Y = transform(Y, input_transform)
+    # Y_spliced: (frame, num_ceps * (context_size * 2 + 1))
+    Y_spliced = splice(Y, context_size)
+    # Y_ss: (frame / subsampling, num_ceps * (context_size * 2 + 1))
+    Y_ss = Y_spliced[::subsampling]
+
+    Y_ss = torch.from_numpy(Y_ss).float()
+
+    return Y_ss
