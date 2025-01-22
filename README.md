@@ -97,7 +97,7 @@ Upload our implementation of [EEND-EDA](https://arxiv.org/abs/2106.10654) and [E
 python train_offl_eend_eda.py --configs conf/spk_offl_eend_eda.yaml --gpus YOUR_DEVICE_ID,
 python train_STB.py --configs conf/spk_STB.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
-Update the prediction code to support WAV input
+Update predict code to support WAV input
 ```
 python dia_pred.py --wav_path xxx.wav --configs conf/xxx_infer.yaml --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
