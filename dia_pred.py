@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     parser = ArgumentParser()
 
-    parser.add_argument("--wav_path", type=str, default="./swb_sre_ts_ns4_beta9_500/16/mix_0000077.wav", help="Path to input wav file")
+    parser.add_argument("--wav_path", type=str, default="./example/mix_0000077.wav", help="Path to input wav file")
     parser.add_argument('--configs', help='Configuration file path', default='./conf/spk_onl_tfm_enc_dec_nonautoreg_infer.yaml')
     parser.add_argument("--test_from_folder", default="./ckpt/simu", help="Checkpoint path to test training")
     setup = parser.parse_args()
