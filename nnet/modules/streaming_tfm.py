@@ -352,11 +352,11 @@ if __name__ == '__main__':
     standard_out = standard_tfm(inp_seq, inp_mask)
 
     for t in range(inp_seq.shape[1]):
-        frame_output = streaming_tfm(inp_seq[:, t:t+1, :])  # 保证输出符合预期
+        frame_output = streaming_tfm(inp_seq[:, t:t+1, :])  
         # print(f"Frame {t}: {frame_output.shape}")
         incremental_output.append(frame_output)
     incremental_output = torch.cat(incremental_output, dim=1)
-    # print(f"Incremental output: {incremental_output.shape}", f"Standard output: {standard_out.shape}")  # 打印输出的形状
+    # print(f"Incremental output: {incremental_output.shape}", f"Standard output: {standard_out.shape}")  
     # print(incremental_output)
     # print(standard_out)
     print(torch.allclose(incremental_output, standard_out, atol=1e-6, rtol=1e-5))
@@ -411,11 +411,11 @@ if __name__ == '__main__':
     masked_out = masked_decoder(inp_seq, inp_mask)
     
     for t in range(inp_seq.shape[1]):
-        frame_output = streaming_dec(inp_seq[:, t:t+1, :, :])  # 保证输出符合预期
+        frame_output = streaming_dec(inp_seq[:, t:t+1, :, :])  
         # print(f"Frame {t}: {frame_output.shape}")
         streaming_output.append(frame_output)
     streaming_output = torch.cat(streaming_output, dim=1)
-    # print(f"Streaming output: {streaming_output.shape}", f"Masked output: {masked_out.shape}")  # 打印输出的形状
+    # print(f"Streaming output: {streaming_output.shape}", f"Masked output: {masked_out.shape}")  
     # print(streaming_output)
     # print(masked_out)
     print(torch.allclose(streaming_output, masked_out, atol=1e-6, rtol=1e-5))
