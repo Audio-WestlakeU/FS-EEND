@@ -102,6 +102,11 @@ Update predict code to support WAV input
 python dia_pred.py --wav_path xxx.wav --configs conf/xxx_infer.yaml --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
 
+# Fully Streaming Inference
+```
+python streaming_infer_dia.py
+```
+
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
 - <a href="https://github.com/Xflick/EEND_PyTorch" target="_blank">EEND-Pytorch</a>
