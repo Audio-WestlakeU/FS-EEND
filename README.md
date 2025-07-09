@@ -102,7 +102,7 @@ Update predict code to support WAV input
 python dia_pred.py --wav_path xxx.wav --configs conf/xxx_infer.yaml --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
 
-# Fully Streaming Inference
+# Streaming Inference
 ```
 python streaming_infer_dia.py
 ```
