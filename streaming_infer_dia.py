@@ -104,7 +104,7 @@ if __name__ == "__main__":
     parser.add_argument("--wav_path", type=str, default="./test_samples/mix_0000176.wav", help="Path to input wav file")
     parser.add_argument('--configs', default='./conf/spk_onl_tfm_enc_dec_nonautoreg_infer.yaml', help='Configuration file path')
     parser.add_argument("--test_from_folder", default="./ckpt/simu", help="Checkpoint folder to test training")
-    parser.add_argument("--test_from_file", default="./ckpt/simu/FS-EEND_simu_41_50epo_avg_model_2.ckpt", help="Checkpoint file to test training")
+    parser.add_argument("--test_from_file", default="./ckpt/simu/FS-EEND_simu_41_50epo_avg_model.ckpt", help="Checkpoint file to test training")
     parser.add_argument("--gpus", default=0, type=int, help="Device id of gpus to use")
     setup = parser.parse_args()
     with open(setup.configs, "r") as f:
