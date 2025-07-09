@@ -36,6 +36,7 @@ model:
     max_seqlen: !ref <data[chunk_size]>
     mask_delay: 0
     dec_n_layers: 2
+    conv_delay: 9
   
 data:
   num_speakers:
