@@ -1,4 +1,4 @@
-# This is a frame-by-frame transformer encoder
+# This is a frame-by-frame streaming inference implementation
 import torch
 from torch import Tensor
 import torch.nn as nn
