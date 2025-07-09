@@ -1,10 +1,10 @@
-# Three modules of a frame-by-frame streaming inference implementation
+# This is a frame-by-frame transformer encoder
 import torch
 from torch import Tensor
 import torch.nn as nn
 import torch.nn.functional as F
 from collections import deque
-from merge_tfm_encoder import TransformerEncoderFusionLayer
+from .merge_tfm_encoder import TransformerEncoderFusionLayer
 import math
 
 class IncrementalSelfAttention(nn.Module):
@@ -80,8 +80,12 @@ class StreamingTransformerEncoderLayer(nn.Module):
 
 
 class StreamingEmbeddingEncoder(nn.Module):
-    def __init__(self, d_model, nhead, num_layers, dim_feedforward=2048, dropout=0.1, activation=F.relu):
+    def __init__(self, in_size, d_model, nhead, num_layers, dim_feedforward=2048, dropout=0.1, activation=F.relu):
         super().__init__()
+        self.bn = nn.BatchNorm1d(in_size)
+        self.proj = nn.Linear(in_size, d_model)
+        self.proj_norm = nn.LayerNorm(d_model)
+        
         self.layers = nn.ModuleList([
             StreamingTransformerEncoderLayer(
                 d_model=d_model,
@@ -93,14 +97,24 @@ class StreamingEmbeddingEncoder(nn.Module):
             for _ in range(num_layers)
         ])
         self.cache = [{} for _ in range(num_layers)] # cache key and value for each layer
+        
+        self.init_weights()
+        
+    def init_weights(self):
+        initrange = 0.1
+        self.proj.bias.data.zero_()
+        self.proj.weight.data.uniform_(-initrange, initrange)
 
-    def forward(self, x):
+    def forward(self, x: Tensor):
         """
         Args:
             x: (batch_size, 1, d_model)
         Returns:
             output: (batch_size, 1, d_model)
         """
+        x = self.bn(x.transpose(1, 2)).transpose(1, 2)
+        x = self.proj_norm(self.proj(x))
+        
         for i, layer in enumerate(self.layers):
             cache = self.cache[i]
             past_key = cache.get('key', None)
@@ -216,6 +230,9 @@ class StreamingAttractorDecoderLayer(nn.Module):
 class StreamingAttractorDecoder(nn.Module):
     def __init__(self, d_model, nhead, num_layers, dim_feedforward=2048, dropout=0.1, activation=F.relu):
         super().__init__()
+        self.pos_enc = PositionalEncoding(d_model, dropout)
+        self.convert = nn.Linear(2 * d_model, d_model)
+        
         self.layers = nn.ModuleList([
             StreamingAttractorDecoderLayer(
                 d_model=d_model,
@@ -228,13 +245,16 @@ class StreamingAttractorDecoder(nn.Module):
         ])
         self.cache = [{} for _ in range(num_layers)] # cache key and value for each layer
     
-    def forward(self, x):
+    def forward(self, emb: Tensor, max_nspks: int):
         """
         Args:
-            x: (batch_size, 1, n_spks, d_model)
+            emb: (batch_size, 1, d_model)
         Returns:
             output: (batch_size, 1, n_spks, d_model)
         """
+        pos_enc = self.pos_enc(emb, max_nspks) # (batch_size, 1, n_spks, d_model)
+        x = self.convert(torch.cat([emb.unsqueeze(dim=2).repeat(1, 1, max_nspks, 1), pos_enc], dim=-1))
+        
         for i, layer in enumerate(self.layers):
             cache = self.cache[i]
             past_key = cache.get('key', None)
@@ -242,61 +262,11 @@ class StreamingAttractorDecoder(nn.Module):
             # print(f"Layer {i} - past_key: {past_key.shape if past_key is not None else None}")
             # print(f"Layer {i} - past_value: {past_value.shape if past_value is not None else None}")
             x, new_key, new_value = layer(x, past_key, past_value)
-            
+
             self.cache[i]["key"] = new_key.detach()  # Detach to save memory
             self.cache[i]["value"] = new_value.detach()
         
         return x
-
-
-
-def _generate_square_subsequent_mask(sz, device):
-        mask = (torch.triu(torch.ones(sz, sz, device=device), diagonal=-0) == 1).transpose(0, 1)
-        mask = mask.float().masked_fill(mask == 0, float('-inf')).masked_fill(mask == 1, float(0.0))
-        return mask
-
-def copy_params_with_standard_tfm_encoder(standard_tfm, incremental_tfm):
-
-    for std_layer, incr_layer in zip(standard_tfm.layers, incremental_tfm.layers):
-        incr_layer.self_attn.attention.in_proj_weight.data.copy_(std_layer.self_attn.in_proj_weight.data)
-        incr_layer.self_attn.attention.in_proj_bias.data.copy_(std_layer.self_attn.in_proj_bias.data)
-        incr_layer.self_attn.attention.out_proj.weight.data.copy_(std_layer.self_attn.out_proj.weight.data)
-        incr_layer.self_attn.attention.out_proj.bias.data.copy_(std_layer.self_attn.out_proj.bias.data)
-
-        incr_layer.linear1.weight.data.copy_(std_layer.linear1.weight.data)
-        incr_layer.linear1.bias.data.copy_(std_layer.linear1.bias.data)
-        incr_layer.linear2.weight.data.copy_(std_layer.linear2.weight.data)
-        incr_layer.linear2.bias.data.copy_(std_layer.linear2.bias.data)
-
-        incr_layer.norm1.weight.data.copy_(std_layer.norm1.weight.data)
-        incr_layer.norm1.bias.data.copy_(std_layer.norm1.bias.data)
-        incr_layer.norm2.weight.data.copy_(std_layer.norm2.weight.data)
-        incr_layer.norm2.bias.data.copy_(std_layer.norm2.bias.data)
-
-def copy_params_with_masked_decoder(masked_dec, straming_dec):
-    for msk_layer, str_layer in zip(masked_dec.layers, straming_dec.layers):
-        str_layer.temp_attn.attention.in_proj_weight.data.copy_(msk_layer.self_attn1.in_proj_weight.data)
-        str_layer.temp_attn.attention.in_proj_bias.data.copy_(msk_layer.self_attn1.in_proj_bias.data)
-        str_layer.temp_attn.attention.out_proj.weight.data.copy_(msk_layer.self_attn1.out_proj.weight.data)
-        str_layer.temp_attn.attention.out_proj.bias.data.copy_(msk_layer.self_attn1.out_proj.bias.data)
-            
-        str_layer.spk_attn.in_proj_weight.data.copy_(msk_layer.self_attn2.in_proj_weight.data)
-        str_layer.spk_attn.in_proj_bias.data.copy_(msk_layer.self_attn2.in_proj_bias.data)
-        str_layer.spk_attn.out_proj.weight.data.copy_(msk_layer.self_attn2.out_proj.weight.data)
-        str_layer.spk_attn.out_proj.bias.data.copy_(msk_layer.self_attn2.out_proj.bias.data)
-            
-        str_layer.linear1.weight.data.copy_(msk_layer.linear1.weight.data)
-        str_layer.linear1.bias.data.copy_(msk_layer.linear1.bias.data)
-        str_layer.linear2.weight.data.copy_(msk_layer.linear2.weight.data)
-        str_layer.linear2.bias.data.copy_(msk_layer.linear2.bias.data)
-            
-        str_layer.norm1.weight.data.copy_(msk_layer.norm11.weight.data)
-        str_layer.norm1.bias.data.copy_(msk_layer.norm11.bias.data)
-        str_layer.norm2.weight.data.copy_(msk_layer.norm21.weight.data)
-        str_layer.norm2.bias.data.copy_(msk_layer.norm21.bias.data)
-        str_layer.norm3.weight.data.copy_(msk_layer.norm22.weight.data)
-        str_layer.norm3.bias.data.copy_(msk_layer.norm22.bias.data)
-
 
 class PositionalEncoding(nn.Module):
     """Inject some information about the relative or absolute position of the tokens
@@ -329,95 +299,8 @@ class PositionalEncoding(nn.Module):
     def forward(self, x: Tensor, max_nspks):
         # Add positional information to each time step of x
         pe = self.pe[:, :max_nspks, :]
-        pe = pe.unsqueeze(dim=0).repeat(x.shape[0], x.shape[1], 1, 1) # (B, T, C, D)
-        x = x.unsqueeze(dim=2).repeat(1, 1, max_nspks, 1)
+        pe = pe.unsqueeze(dim=0).repeat(x.shape[0], 1, 1, 1) # (B, 1, S, D)
+        # x = x.unsqueeze(dim=2).repeat(1, 1, max_nspks, 1)
         # x = x + pe
         return pe
-
-
-if __name__ == '__main__':
-    inp_seq = torch.rand(4, 100, 64) # (B, T, D)
-    B, T, D = inp_seq.shape
-    
-    encoder_layer = nn.TransformerEncoderLayer(d_model=64, nhead=4, dim_feedforward=2048, dropout=0.1, activation=F.relu, batch_first=True)
-    standard_tfm = nn.TransformerEncoder(encoder_layer, num_layers=2)
-    streaming_tfm = StreamingEmbeddingEncoder(d_model=64, nhead=4, num_layers=2)
-    copy_params_with_standard_tfm_encoder(standard_tfm, streaming_tfm)
-    
-    streaming_tfm.eval()
-    standard_tfm.eval()
-    incremental_output = []
-
-    inp_mask = _generate_square_subsequent_mask(inp_seq.shape[1], device=inp_seq.device)
-    standard_out = standard_tfm(inp_seq, inp_mask)
-
-    for t in range(inp_seq.shape[1]):
-        frame_output = streaming_tfm(inp_seq[:, t:t+1, :])  
-        # print(f"Frame {t}: {frame_output.shape}")
-        incremental_output.append(frame_output)
-    incremental_output = torch.cat(incremental_output, dim=1)
-    # print(f"Incremental output: {incremental_output.shape}", f"Standard output: {standard_out.shape}")  
-    # print(incremental_output)
-    # print(standard_out)
-    print(torch.allclose(incremental_output, standard_out, atol=1e-6, rtol=1e-5))
-    
-    # test streaming conv1d
-    inp_seq = inp_seq.transpose(1, 2)  # (B, D, T)
-    C_in = C_out = inp_seq.shape[1]
-    kernel_size = 19
-    center = kernel_size // 2
-    
-    standard_conv = nn.Conv1d(C_in, C_out, kernel_size, padding=center)
-    streaming_conv = StreamingConv1d(C_in, C_out, kernel_size)
-    # copy params
-    streaming_conv.conv.load_state_dict(standard_conv.state_dict())
-    
-    standard_out_conv = standard_conv(inp_seq) # (B, C_out, T)
-    # streaming inference
-    stream_out_conv = []
-    for t in range(T):
-        x_t = inp_seq[:, :, t:t+1]  # (B, C_in, 1)
-        y_t = streaming_conv(x_t)  # (B, C_out, 1)
-        if y_t is not None:
-            stream_out_conv.append(y_t)
-    
-    for _ in range(center):
-        dummy = torch.zeros_like(inp_seq[:, :, 0:1])
-        y_t = streaming_conv(dummy)  # (B, C_out, 1)
-        stream_out_conv.append(y_t)
-    
-    if not stream_out_conv:
-        print("Streaming conv1d did not produce any output.")
-        exit()
-    
-    y_stream = torch.cat(stream_out_conv, dim=-1)  # (B, C_out, T)
-    
-    print(torch.allclose(y_stream, standard_out_conv, atol=1e-6, rtol=1e-5))
-    
-    # test streaming attractor decoder
-    n_spks = 4
-    inp_seq = torch.rand(4, 100, n_spks, 64) # (B, T, n_spks, D)
-    decoder_layer = TransformerEncoderFusionLayer(d_model=64, nhead=4, dim_feedforward=2048, dropout=0.1, activation=F.relu, batch_first=True)
-    masked_decoder = nn.TransformerEncoder(decoder_layer, num_layers=2)
-    streaming_dec = StreamingAttractorDecoder(d_model=64, nhead=4, num_layers=2)
-    
-    copy_params_with_masked_decoder(masked_decoder, streaming_dec)
-    
-    masked_decoder.eval()
-    streaming_dec.eval()
-    streaming_output = []
-    
-    inp_mask = _generate_square_subsequent_mask(inp_seq.shape[1], device=inp_seq.device)
-    masked_out = masked_decoder(inp_seq, inp_mask)
-    
-    for t in range(inp_seq.shape[1]):
-        frame_output = streaming_dec(inp_seq[:, t:t+1, :, :])  
-        # print(f"Frame {t}: {frame_output.shape}")
-        streaming_output.append(frame_output)
-    streaming_output = torch.cat(streaming_output, dim=1)
-    # print(f"Streaming output: {streaming_output.shape}", f"Masked output: {masked_out.shape}")  
-    # print(streaming_output)
-    # print(masked_out)
-    print(torch.allclose(streaming_output, masked_out, atol=1e-6, rtol=1e-5))
-    
     
