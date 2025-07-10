@@ -14,6 +14,8 @@ from datasets.feature import *
 from train.utils.make_rttm import make_rttm
 import hyperpyyaml
 from nnet.utils.copy_params import copy_params_from_masked_to_streaming
+from torch.cuda.amp import autocast
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -21,8 +23,8 @@ warnings.filterwarnings("ignore")
 
 def predict(wav_path, configs, test_folder=None, test_file=None, gpus=0):
     # Set device
-    # device = torch.device(f"cuda:{gpus}" if torch.cuda.is_available() else "cpu")
-    device = "cpu"
+    device = torch.device(f"cuda:{gpus}" if torch.cuda.is_available() else "cpu")
+    # device = "cpu"
     
     # Extract Fbank feature
     feat = extract_fbank(
@@ -60,33 +62,40 @@ def predict(wav_path, configs, test_folder=None, test_file=None, gpus=0):
     # ckpt_package = torch.load(test_file, map_location="cpu")
     masked_model.load_state_dict(new_state_dict)
     masked_model.eval()
-    masked_pred, _, _ = masked_model.test([feat], [len(feat)], max_nspks=configs["data"]["max_speakers"] + 2)
-    masked_pred = torch.sigmoid(masked_pred[0][:, 1:])
+    with torch.no_grad():
+        masked_pred, _, _ = masked_model.test([feat], [len(feat)], max_nspks=configs["data"]["max_speakers"] + 2)
+        masked_pred = torch.sigmoid(masked_pred[0][:, 1:])
+    masked_pred = masked_pred.detach().cpu().float()
     print(masked_pred)
     copy_params_from_masked_to_streaming(masked_model, streaming_model)
 
     # Predict
     preds = []
+    st_time = time.time()
     streaming_model.eval()
-    for t in range(len(feat)):
-        feat_t = feat[t:t+1].unsqueeze(0) # (B, 1, D)
-        pred_t = streaming_model.test(feat_t, max_nspks=configs["data"]["max_speakers"] + 2) # (B, 1, S)
-        if pred_t is not None:
-            preds.append(pred_t)
-    for _ in range(configs["model"]["params"]["conv_delay"]):
-        dummy_feat = torch.zeros(1, 1, feat.shape[-1], device=feat.device)
-        pred_t = streaming_model.test(dummy_feat, max_nspks=configs["data"]["max_speakers"] + 2, dummy_conv_input=True) # (B, 1, S)
-        if pred_t is not None:
-            preds.append(pred_t)
+    with torch.no_grad():
+        for t in range(len(feat)):
+            feat_t = feat[t:t+1].unsqueeze(0) # (B, 1, D)
+            pred_t = streaming_model.test(feat_t, max_nspks=configs["data"]["max_speakers"] + 2) # (B, 1, S)
+            if pred_t is not None:
+                preds.append(pred_t)
+        for _ in range(configs["model"]["params"]["conv_delay"]):
+            dummy_feat = torch.zeros(1, 1, feat.shape[-1], device=feat.device)
+            pred_t = streaming_model.test(dummy_feat, max_nspks=configs["data"]["max_speakers"] + 2, dummy_conv_input=True) # (B, 1, S)
+            if pred_t is not None:
+                preds.append(pred_t)
+    
+    ed_time = time.time()
+    print(f"Inference time: {ed_time - st_time:.2f}s")
     
     preds = torch.cat(preds, dim=1)
     pred = torch.sigmoid(preds[0][:, 1:])
+    pred = pred.detach().cpu().float()
     print(pred)
     # print(pred.shape)
     
     print(torch.allclose(pred, masked_pred, atol=1e-4, rtol=1e-4))
     # Dictionary with the key of speaker and the value of the predicted active timestamps of each speaker
-    pred = pred.detach().cpu()
     rttm = make_rttm(rec=rec, 
               pred=pred, 
               frame_shift=configs["data"]["feat"]["hop_length"],
