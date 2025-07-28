@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import math
-from torch.nn import TransformerEncoder, TransformerEncoderLayer, TransformerDecoder, TransformerDecoderLayer
-from ..modules.merge_tfm_encoder import TransformerEncoderFusionLayer
+from torch.nn import TransformerEncoderLayer, TransformerDecoder, TransformerDecoderLayer
+from ..modules.merge_tfm_encoder import TransformerEncoderFusionLayer, TransformerEncoder
 from torch import Tensor
 from typing import Optional, Any, Union, Callable
 
