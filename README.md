@@ -2,7 +2,7 @@
 
 The official Pytorch implementation of "[Frame-wise streaming end-to-end speaker diarization with non-autoregressive self-attention-based attractors](https://arxiv.org/abs/2309.13916)" [accepted by ICASSP 2024].
 
-The code for "[LS-EEND: Long-Form Streaming End-to-End Neural Diarization with Online Attractor Extraction](https://arxiv.org/abs/2410.06670)." [accepted by IEEE Trans. ASLPRO 2025)] will be uploaded later.
+The code for "[LS-EEND: Long-Form Streaming End-to-End Neural Diarization with Online Attractor Extraction](https://arxiv.org/abs/2410.06670)." [accepted by IEEE Trans. ASLPRO 2025] will be uploaded later.
 
 
 
