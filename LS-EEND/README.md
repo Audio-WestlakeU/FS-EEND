@@ -6,6 +6,7 @@ This work proposes a frame-wise online/streaming end-to-end neural diarization (
 <image src="/LS-EEND/utlis/arch.png"  width="600" alt="The proposed LS-EEND architecture" />
 </div>
 
+# Get started
 1. Start training on simulated data by
 ```
 python train_dia_simu.py --configs conf/spk_onl_conformer_retention_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID,
