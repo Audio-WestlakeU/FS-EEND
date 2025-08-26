@@ -62,52 +62,17 @@ python metrics.py --configs conf/xxx_infer.yaml
 ```
 
 # Performance
-Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speaker Recognition Evaluation (SRE) to generate simulated data (including 4054 speakers).
 
-| Dataset | DER(%) |ckpt|
-| :--------: | :--: | :--: | 
-| Simu1spk | 0.6 | [simu_avg_41_50epo.ckpt](https://drive.google.com/file/d/1JYr1zOxsHwQxIk9W4vwxzUfJFtaTQ02q/view?usp=sharing) |
-| Simu2spk | 4.3 | same as above |
-| Simu3spk | 9.8 | same as above |
-| Simu4spk | 14.7 | same as above |
-| CH2spk | 10.0 | [ch_avg_91_100epo.ckpt](https://drive.google.com/file/d/1i1Ow9IfPSwBRyRazY8-VX3z4ngDvSwx6/view?usp=sharing) |
-| CH3spk | 15.3 | same as above |
-| CH4spk | 21.8 | same as above |
+| Simulated Dataset | Simu1spk | Simu2spk | Simu3spk | Simu4spk | Simu5spk | Simu6spk | Simu7spk | Simu8spk |
+| :--------: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| **DERS (%)** |  0.34 | 2.84 | 6.25 | 8.34 | 11.26 | 15.36 | 19.53 | 23.35 |
+| **ckpt** | [simu_1-8spk.ckpt](https://drive.google.com/file/d/1uWY8JvjHJJ-SvGiNS-6s3q10g4CY2ePt/view?usp=sharing) | same | same | same | same | same | same | same |
 
-The ckpts are the average of model parameters for the last 10 epochs.
+|Real-world Dataset | CALLHOME | DIHARD II | DIHARD III | AMI Dev | AMI Eval |
+| :--------: | :--: | :--: | :--: | :--: | :--: |
+| **DERS (%)** | 12.11 | 27.58 | 19.61 | 20.97 | 20.76 |
+| **ckpt** | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
 
-If you want to check the performance of ckpt on CALLHOME:
-```
-python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
-```
-Note the modification of the code in train_dia_fintn_ch.py
-```
-ckpts = [x for x in all_files if (".ckpt" in x) and ("epoch" in x) and int(x.split("=")[1].split("-")[0])>=configs["log"]["start_epoch"] and int(x.split("=")[1].split("-")[0])<=configs["log"]["end_epoch"]]
-
-state_dict = torch.load(test_folder + "/" + c, map_location="cpu")["state_dict"]
-```
-to
-```
-ckpts = [x for x in all_files if (".ckpt" in x)]
-
-state_dict = torch.load(test_folder + "/" + c, map_location="cpu")
-```
-
-# Update
-Upload our implementation of [EEND-EDA](https://arxiv.org/abs/2106.10654) and [EEND-EDA+FLEX-STB](https://arxiv.org/abs/2101.08473)
-```
-python train_offl_eend_eda.py --configs conf/spk_offl_eend_eda.yaml --gpus YOUR_DEVICE_ID,
-python train_STB.py --configs conf/spk_STB.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
-```
-Update predict code to support WAV input
-```
-python dia_pred.py --wav_path xxx.wav --configs conf/xxx_infer.yaml --test_from_folder YOUR_CKPT_SAVE_DIR
-```
-
-# Streaming Inference
-```
-python streaming_infer_dia.py
-```
 
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
