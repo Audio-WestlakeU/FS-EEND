@@ -1,4 +1,6 @@
-
+<div align="center">
+<image src="/LS-EEND/utlis/arch.png"  width="300" alt="The proposed LS-EEND architecture" />
+</div>
 
 # Start training on simulated data by
 python train_dia_simu.py --configs conf/spk_onl_conformer_retention_enc_dec_nonautoreg.yaml --gpus YOUR_DEVICE_ID,
