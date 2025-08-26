@@ -51,3 +51,18 @@ AMI, DIHARD2 and DIHARD3 data are down-sampled to 8 kHz to align with the sampli
 | **ckpt** | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
 
 
+# Citation
+
+If you want to cite this paper:
+
+```
+@ARTICLE{11122273,
+  author={Liang, Di and Li, Xiaofei},
+  journal={IEEE Transactions on Audio, Speech and Language Processing}, 
+  title={LS-EEND: Long-Form Streaming End-to-End Neural Diarization With Online Attractor Extraction}, 
+  year={2025},
+  volume={33},
+  number={},
+  pages={3568-3581},
+  doi={10.1109/TASLPRO.2025.3597446}}
+```
