@@ -26,16 +26,16 @@ Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speake
 
 | Dataset | DER(%) |ckpt|
 | :--------: | :--: | :--: | 
-| Simu1spk | 0.34 | [simu_avg_41_50epo.ckpt](https://drive.google.com/file/d/1uWY8JvjHJJ-SvGiNS-6s3q10g4CY2ePt/view?usp=sharing) |
+| Simu1spk | 0.34 | [simu_1-8spk.ckpt](https://drive.google.com/file/d/1uWY8JvjHJJ-SvGiNS-6s3q10g4CY2ePt/view?usp=sharing) |
 | Simu2spk | 2.84 | same as above |
 | Simu3spk | 6.25 | same as above |
 | Simu4spk | 8.34 | same as above |
 | Simu5spk | 11.26 | same as above |
-| Simu4spk | 15.36 | same as above |
-| Simu4spk | 19.53 | same as above |
-| Simu4spk | 23.35 | same as above |
-| CALLHOME | 12.11 | [ch_avg_91_100epo.ckpt](https://drive.google.com/file/d/1i1Ow9IfPSwBRyRazY8-VX3z4ngDvSwx6/view?usp=sharing) |
-| DIHARD II | 27.58 | same as above |
-| DIHARD III | 19.61 | same as above |
-| AMI Dev | 20.97 | same as above |
+| Simu6spk | 15.36 | same as above |
+| Simu7spk | 19.53 | same as above |
+| Simu8spk | 23.35 | same as above |
+| CALLHOME | 12.11 | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) |
+| DIHARD II | 27.58 | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) |
+| DIHARD III | 19.61 | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) |
+| AMI Dev | 20.97 | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
 | AMI Eval | 20.76 | same as above |
