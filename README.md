@@ -21,10 +21,10 @@ The official Pytorch implementation of:
 
 # Introduction
 
-This work proposes a frame-wise online/streaming end-to-end neural diarization (FS-EEND) method in a frame-in-frame-out fashion. To frame-wisely detect a flexible number of speakers and extract/update their corresponding attractors, we propose to leverage a causal speaker embedding encoder and an online non-autoregressive self-attention-based attractor decoder. A look-ahead mechanism is adopted to allow leveraging some future frames for effectively detecting new speakers in real time and adaptively updating speaker attractors.
+This work proposes a frame-wise online/streaming end-to-end neural diarization (EEND) method, which detects speaker activities in a frame-in-frame-out fashion. The proposed model mainly consists of a causal embedding encoder and an online attractor decoder. Speakers are modeled in the self-attention-based decoder along both the time and speaker dimensions, and frame-wise speaker attractors are automatically generated and updated for new speakers and existing speakers, respectively. Retention mechanism is employed and especially adapted for long-form diarization with a linear temporal complexity. A multi-step progressive training strategy is proposed for gradually learning from easy tasks to hard tasks in terms of the number of speakers and audio length. Finally, the proposed model (referred to as long-form streaming EEND, LS-EEND) is able to perform streaming diarization for a high (up to 8) and flexible number speakers and very long (say one hour) audio recordings.
 
 <div align="center">
-<image src="/FS-EEND/utlis/arch.png"  width="300" alt="The proposed FS-EEND architecture" />
+<image src="/LS-EEND/utlis/arch.png"  width="600" alt="The proposed LS-EEND architecture" />
 </div>
 
 # Get started
