@@ -22,7 +22,6 @@ For simulated data and callhome data, we use a collar tolerance of 0.25s and med
 ami, dihard2 and dihard3 data are down-sampled to 8 kHz to align with the sampling rate of the simulated dataset.
 
 # Performance
-Please note we use Switchboard Cellular (Part 1 and 2) and 2005-2008 NIST Speaker Recognition Evaluation (SRE) to generate simulated data (including 4054 speakers).
 
 | Dataset | DER(%) |ckpt|
 | :--------: | :--: | :--: | 
