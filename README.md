@@ -1,6 +1,7 @@
 # FS-EEND
 
 The official Pytorch implementation of:
+
 [1] "[Frame-wise streaming end-to-end speaker diarization with non-autoregressive self-attention-based attractors](https://arxiv.org/abs/2309.13916)" [accepted by ICASSP 2024].
 
 [2] "[LS-EEND: Long-Form Streaming End-to-End Neural Diarization with Online Attractor Extraction](https://ieeexplore.ieee.org/document/11122273)." [accepted by IEEE Trans. ASLPRO 2025].
