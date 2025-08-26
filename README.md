@@ -89,4 +89,14 @@ If you want to cite this paper:
   title={Frame-Wise Streaming end-to-end Speaker Diarization with Non-Autoregressive Self-Attention-Based Attractors}, 
   year={2024},
   pages={10521-10525}}
+
+@ARTICLE{11122273,
+  author={Liang, Di and Li, Xiaofei},
+  journal={IEEE Transactions on Audio, Speech and Language Processing}, 
+  title={LS-EEND: Long-Form Streaming End-to-End Neural Diarization With Online Attractor Extraction}, 
+  year={2025},
+  volume={33},
+  number={},
+  pages={3568-3581},
+  doi={10.1109/TASLPRO.2025.3597446}}
 ```
