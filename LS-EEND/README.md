@@ -23,18 +23,14 @@ ami, dihard2 and dihard3 data are down-sampled to 8 kHz to align with the sampli
 
 # Performance
 
-| Dataset | DER(%) |ckpt|
-| :--------: | :--: | :--: | 
-| Simu1spk | 0.34 | [simu_1-8spk.ckpt](https://drive.google.com/file/d/1uWY8JvjHJJ-SvGiNS-6s3q10g4CY2ePt/view?usp=sharing) |
-| Simu2spk | 2.84 | same as above |
-| Simu3spk | 6.25 | same as above |
-| Simu4spk | 8.34 | same as above |
-| Simu5spk | 11.26 | same as above |
-| Simu6spk | 15.36 | same as above |
-| Simu7spk | 19.53 | same as above |
-| Simu8spk | 23.35 | same as above |
-| CALLHOME | 12.11 | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) |
-| DIHARD II | 27.58 | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) |
-| DIHARD III | 19.61 | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) |
-| AMI Dev | 20.97 | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
-| AMI Eval | 20.76 | same as above |
+| Simulated Dataset | Simu1spk | Simu2spk | Simu3spk | Simu4spk | Simu5spk | Simu6spk | Simu7spk | Simu8spk |
+| :--------: | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| **DERS** |  0.34 | 2.84 | 6.25 | 8.34 | 11.26 | 15.36 | 19.53 | 23.35 |
+| **ckpt** | [simu_1-8spk.ckpt](https://drive.google.com/file/d/1uWY8JvjHJJ-SvGiNS-6s3q10g4CY2ePt/view?usp=sharing) | same | same | same | same | same | same | same |
+
+|Real-world Dataset | CALLHOME | DIHARD II | DIHARD III | AMI Dev | AMI Eval |
+| :--------: | :--: | :--: | :--: | :--: | :--: |
+| **DERS** | 12.11 | 27.58 | 19.61 | 20.97 | 20.76 |
+| **ckpt** | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
+
+
