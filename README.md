@@ -1,4 +1,4 @@
-# FS-EEND
+# ES-EEND & LS-EEND
 
 The official Pytorch implementation of:
 
