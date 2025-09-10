@@ -17,20 +17,18 @@ python train_dia_simu.py --configs conf/spk_onl_conformer_retention_enc_dec_nona
 python train_dia_fintun_real.py --configs spk_onl_conformer_retention_enc_dec_nonautoreg_callhome/ami/dihard2/dihard3.yaml --gpus YOUR_DEVICE_ID,
 ```
 
-3. Inference by (# modify your own path to save predictions in test_step in train/oln_tfm_enc_decxxx.py.)
+3. Inference by (# modify your own path to save predictions in test_step in train/oln_tfm_enc_decxxx.py. train_dia_simu.py for inferring simulated data and train_dia_fintun_real.py for inferring real-word data)
 ```
-python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_dia_simu.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_dia_fintun_real.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
-
 4. Evaluation
-```
-generate speech activity probability (diarization results)
+ ```
+# generate speech activity probability (diarization results)
 cd visualize
 python gen_h5_output.py
-```
 
-5. calculate DERs
-```
+#calculate DERs (mid filter and collar)
 python metrics.py --configs conf/xxx_infer.yaml
 ```
 
