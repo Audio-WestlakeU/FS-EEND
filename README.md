@@ -47,9 +47,10 @@ python train_dia.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg.yaml --gpus YO
 ```
 python train_dia_fintn_ch.py --configs conf/spk_onl_tfm_enc_dec_nonautoreg_callhome.yaml --gpus YOUR_DEVICE_ID,
 ```
-6. Inference by (# modify your own path to save predictions in test_step in train/oln_tfm_enc_decxxx.py.)
+6. Inference by (# modify your own path to save predictions in test_step in train/oln_tfm_enc_decxxx.py. train_dia_simu.py for inferring simulated data and train_dia_fintun_real.py for inferring real-word data)
 ```
-python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_dia_simu.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
+python train_dia_fintun_real.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --test_from_folder YOUR_CKPT_SAVE_DIR
 ```
 7. Evaluation
  ```
@@ -57,7 +58,7 @@ python train_diaxxx.py --configs conf/xxx_infer.yaml --gpus YOUR_DEVICE_ID, --te
 cd visualize
 python gen_h5_output.py
 
-#calculate DERs
+#calculate DERs (mid filter and collar)
 python metrics.py --configs conf/xxx_infer.yaml
 ```
 
