@@ -74,6 +74,7 @@ python metrics.py --configs conf/xxx_infer.yaml
 | **DERS (%)** | 12.11 | 27.58 | 19.61 | 20.97 | 20.76 |
 | **ckpt** | [ch.ckpt](https://drive.google.com/file/d/1W8nYAB6YoEKMM5KZX-apVADvHaYc2Fre/view?usp=sharing) | [dih2.ckpt](https://drive.google.com/file/d/1vu7VSTnrNsooz5DzaodmctjdwblfB3wv/view?usp=sharing) | [dih3.ckpt](https://drive.google.com/file/d/115iaEG1OZwXa9tSyScXGtWeOk9JLfpER/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) | [ami.ckpt](https://drive.google.com/file/d/1Zbc-8fXr_9kydjYS5SAeIaYDr6O1Ik74/view?usp=sharing) |
 
+(All datasets are sampled at 8kHZ)
 
 # Reference code
 - <a href="https://github.com/hitachi-speech/EEND" target="_blank">EEND</a> 
