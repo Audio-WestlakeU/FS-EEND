@@ -204,7 +204,7 @@ def train(configs, gpus, checkpoint_resume, test_folder=None):
 
     if configs["log"]["save_avg_path"]:
         torch.save(test_state, configs["log"]["save_avg_path"])
-    # spk_dia_main.load_state_dict(test_state)
+    spk_dia_main.load_state_dict(test_state)
     trainer.test(spk_dia_main)
 
 if __name__ == "__main__":
