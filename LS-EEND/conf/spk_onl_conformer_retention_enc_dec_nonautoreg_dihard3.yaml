@@ -45,7 +45,7 @@ model:
   
 data:
   num_speakers:
-  max_speakers:  
+  max_speakers: 10 
   context_recp: 7
   label_delay: 0  # number of frames delayed from original labels for uni-directional rnn to see in the future
   feat_type: logmel23_cummn # ['', 'log', 'logmel', 'logmel23', 'logmel23_mn', 'logmel23_mvn', 'logmel23_swn']
