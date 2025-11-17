@@ -104,7 +104,7 @@ if __name__ == "__main__":
     # datatype = "self_sad_post"
     preds_dir = f"/mnt/home/liangdi/projects/pl_version/ls_eend/outputs/data/onl_allspk_version_10w_ver_204_ch_ver_88/{datatype}"
 
-    metric = DiarizationErrorRate(collar=50)
+    metric = DiarizationErrorRate(collar=50)  # Tolerance of 50 frames on both ends = 25 frames tolerance = 250ms tolerance
     gen_ref(configs, preds_dir, metric)
     print(datatype)
     print(preds_dir)
