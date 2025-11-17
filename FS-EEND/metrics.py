@@ -100,5 +100,5 @@ if __name__ == "__main__":
         f.close()
     preds_dir = "/mnt/home/liangdi/projects/pl_version/pl_eend/tsne_visual/data/onl_2spk_version_tfm_10w_ver_37/preds_h5"
 
-    metric = DiarizationErrorRate(collar=50)
+    metric = DiarizationErrorRate(collar=50) # Tolerance of 50 frames on both ends = 25 frames tolerance = 250ms tolerance
     gen_ref(configs, preds_dir, metric)
