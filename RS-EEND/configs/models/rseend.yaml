@@ -1,0 +1,84 @@
+seed_everything: 2
+trainer:
+  gradient_clip_val: 10
+  gradient_clip_algorithm: norm
+  devices: null
+  accelerator: gpu
+  strategy: ddp_find_unused_parameters_false
+  sync_batchnorm: false
+  precision: 32
+  num_sanity_val_steps: 3
+  deterministic: false
+
+model:
+  arch:
+    class_path: models.arch.CleanMel.CleanMel
+    init_args:
+      dim_input: 2
+      dim_output: 1
+      num_layers: 8
+      dim_hidden: 96
+      layer_linear_freq: 1
+      encoder_kernel_size: 5
+      f_kernel_size: 5
+      f_conv_groups: 8
+      num_freqs: 129
+      num_mels: 23
+      mamba_state: 16
+      mamba_conv_kernel: 4
+      online: true
+      look_ahead: 0
+      # _mel_options: {"sr": 8000, "n_fft": 256, "n_mels": 23}
+  input_stft:
+    class_path: models.io.stft_cleanmel.InputSTFT
+    init_args:
+      n_fft: 256 
+      n_win: 200 
+      n_hop: 80
+      center: true 
+      normalize: false 
+      onesided: true 
+      online: true
+      pad_mode: "constant"
+  target_stft:
+    class_path: models.io.stft_cleanmel.TargetMel
+    init_args:
+        sample_rate: 8000
+        n_fft: 256
+        n_win: 200
+        n_hop: 80
+        n_mels: 23
+        f_min: 0
+        f_max: 4000
+        power: 2
+        center: true
+        normalize: false
+        onesided: true
+        mel_norm: "slaney"
+        mel_scale: "slaney"
+        librosa_mel: true
+        online: true
+        pad_mode: "constant"
+  optimizer: [AdamW, { lr: 0.00037, weight_decay: 0.001}]
+  lr_scheduler: [ExponentialLR, { gamma: 1.0 }]
+  exp_name: exp
+  metrics: null
+  log_eps: 1e-10
+
+  lseend_model:
+    class_path: models.arch.LSEEND.OnlineConformerRetentionDADiarization
+    init_args:
+      in_size: 345
+      n_units: 256
+      n_heads: 4
+      enc_n_layers: 4
+      feed_forward_expansion_factor: 4
+      dec_dim_feedforward: 2048
+      conv_expansion_factor: 2
+      dropout: 0.1
+      conv_kernel_size: 16
+      half_step_residual: True
+      max_seqlen: 8000
+      recurrent_chunk_size: 500
+      dec_n_layers: 2
+      conv_delay: 9

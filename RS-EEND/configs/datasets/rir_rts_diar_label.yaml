@@ -1,0 +1,28 @@
+data:
+  class_path: data_loaders.train_dataset_multi_spkers_entire_reco_multi_corpus_diar_label.NoiseTureRIRSimLangCnDataModule
+  init_args:
+    # speech_dir: /data1/liangdi/MelSpatial/speech/HQ_en+cn/train_8k/
+    # ami_dir: /data1/liangdi/dataset_spkdia/ami/mhs_and_sdm/mhs/data/
+    noise_dir: /data1/liangdi/MelSpatial/NOISES/
+    rir_dir: /data1/liangdi/MelSpatial/gen_rir/4spk/ # '/data1/liangdi/MelSpatial/realRIR/rir_split/' # /data1/liangdi/MelSpatial/gen_rir/5spk/ # '/data1/liangdi/MelSpatial/realRIR/rir_split/'
+    # corpora_names: ["HQ_8k", "HQ_8k"]
+    datasets: ['train', 'val', 'test']
+    target: direct_path
+    audio_time_len: [80, 80, 80]
+    silent_scale: 2.0
+    n_spks: 2
+    keep_reverb: false
+    is_random_seg: false
+    repeat_noise: false
+    # is_only_eng_spk: false
+    snr: [-5, 20]
+    batch_size: [2, 8]
+    # test_set: test
+    dataset_len: 
+    # vocos_norm: true
+    # asr_dir: "../Datasets/MambaFSNet/validation/et05_real_isolated_1ch_track/"
+    # asr_tokenlist: "./configs/asr/token_list.yaml"
+    # asr_nlsyms: "./configs/asr/nlsyms.txt"
+
+model_checkpoint: # remove this if it cause any errors
+  save_top_k: -1 # save every checkpoint for testing the performance on utterance/session0 and pick the best checkpoint for evaulating other sessions

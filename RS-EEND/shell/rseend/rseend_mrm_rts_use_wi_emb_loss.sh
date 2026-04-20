@@ -18,8 +18,8 @@ ckpt_path="${ckpt_root}/${model_name}"
 lseend_ckpt_path="/data1/liangdi/logs/distant/spk_onl_tfm_enc_dec_10w_ami_and_noisy_and_clean/version_74/onlineConformerDA_cummn_retention_emb1dcnn_linear_nonautoreg_l2norm_pit_ami_and_noisy_and_clean_allspk_463_463_avg_model.ckpt"
 
 python -m models.CleanMelTrainer_log10_mask_wi_emb_discrim_loss_simu fit \
-    --config configs/models/cleanmel_and_lseend.yaml \
-    --config configs/datasets/real_rir_rts_diar_label.yaml \
+    --config configs/models/rseend.yaml \
+    --config configs/datasets/rir_rts_diar_label.yaml \
     --trainer.precision=32 \
     --trainer.num_sanity_val_steps=125 \
     --trainer.max_epochs=20 \
