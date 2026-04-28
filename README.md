@@ -1,4 +1,4 @@
-# FS-EEND & LS-EEND
+# FS-EEND & LS-EEND & RS-EEND
 
 The official Pytorch implementation of:
 
@@ -6,6 +6,7 @@ The official Pytorch implementation of:
 
 [2] "[LS-EEND: Long-Form Streaming End-to-End Neural Diarization with Online Attractor Extraction](https://ieeexplore.ieee.org/document/11122273)." [accepted by IEEE Trans. ASLPRO 2025].
 
+[3] The code for the network structure and training pipeline of RS-EEND will be updated later.
 
 
 <div>
