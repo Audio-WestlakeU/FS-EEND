@@ -79,6 +79,7 @@ python metrics.py --configs conf/xxx_infer.yaml
 
 # Streaming Inference
 ```
+cd LS-EEND
 python streaming_infer_dia.py     --wav_path ./test_samples/mix_0000176.wav     --configs ./conf/spk_onl_conformer_retention_enc_dec_nonautoreg_infer.yaml     --test_from_file ./ckpt/simu/ls_eend_1-8spk_16_25_avg_model.ckpt     --output_rttm ./test_samples/streaming_predicted.rttm
 ```
 
