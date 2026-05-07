@@ -50,6 +50,11 @@ AMI, DIHARD2 and DIHARD3 data are down-sampled to 8 kHz to align with the sampli
 
 (All datasets are sampled at 8kHZ)
 
+# Streaming Inference
+```
+python streaming_infer_dia.py     --wav_path ./test_samples/mix_0000176.wav     --configs ./conf/spk_onl_conformer_retention_enc_dec_nonautoreg_infer.yaml     --test_from_file ./ckpt/simu/ls_eend_1-8spk_16_25_avg_model.ckpt     --output_rttm ./test_samples/streaming_predicted.rttm
+```
+
 # Citation
 
 If you want to cite this paper:
