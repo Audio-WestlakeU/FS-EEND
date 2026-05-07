@@ -112,6 +112,16 @@ class ConformerEncoderBlock(nn.Module):
     def forward(self, inputs: Tensor) -> Tensor:
         return self.sequential(inputs)
 
+    def forward_one_step(self, x: Tensor, t: int, ret_state: dict, conv_cache: Tensor) -> Tuple[Tensor, Tensor]:
+        x = self.sequential[0](x)
+        attn = self.sequential[1]
+        x = x + attn.module.forward_one_step(x, t, ret_state)
+        conv = self.sequential[2]
+        conv_out, conv_cache = conv.module.forward_one_step(x, conv_cache)
+        x = x + conv_out
+        x = self.sequential[3](x)
+        return self.sequential[4](x), conv_cache
+
 
 class ConformerEncoder(nn.Module):
     """
@@ -155,6 +165,7 @@ class ConformerEncoder(nn.Module):
             recurrent_chunk_size: int = 500,
     ):
         super(ConformerEncoder, self).__init__()
+        self._conv_kernel_size = conv_kernel_size
         self.input_projection = Linear(input_dim, encoder_dim)
         self.layer_norm = nn.LayerNorm(encoder_dim)
         self.layers = nn.ModuleList([ConformerEncoderBlock(
@@ -181,19 +192,6 @@ class ConformerEncoder(nn.Module):
                 child.p = dropout_p
 
     def forward(self, inputs: Tensor) -> Tensor:
-        """
-        Forward propagate a `inputs` for  encoder training.
-
-        Args:
-            inputs (torch.FloatTensor): A input sequence passed to encoder. Typically for inputs this will be a padded
-                `FloatTensor` of size ``(batch, seq_length, dimension)``.
-
-        Returns:
-            (Tensor, Tensor)
-
-            * outputs (torch.FloatTensor): A output sequence of encoder. `FloatTensor` of size
-                ``(batch, seq_length, dimension)``
-        """
         outputs = self.input_projection(inputs)
         outputs = self.layer_norm(outputs)
 
@@ -201,3 +199,47 @@ class ConformerEncoder(nn.Module):
             outputs = layer(outputs)
 
         return outputs
+
+    def forward_recurrent(self, inputs: Tensor) -> Tensor:
+        B, T, _ = inputs.shape
+        outputs = self.layer_norm(self.input_projection(inputs))
+        D = outputs.shape[-1]
+
+        ret_states = [dict() for _ in self.layers]
+        conv_caches = [
+            torch.zeros(B, D, self._conv_kernel_size - 1, device=inputs.device)
+            for _ in self.layers
+        ]
+
+        frames = []
+        for t in range(T):
+            x = outputs[:, [t], :]
+            for i, layer in enumerate(self.layers):
+                x, conv_caches[i] = layer.forward_one_step(x, t, ret_states[i], conv_caches[i])
+            frames.append(x)
+
+        return torch.cat(frames, dim=1)
+
+    def forward_one_step(self, x_t: Tensor, t: int, ret_states: list, conv_caches: list) -> Tensor:
+        # x_t: (B, 1, D)
+        x = self.layer_norm(self.input_projection(x_t))
+        for i, layer in enumerate(self.layers):
+            x, conv_caches[i] = layer.forward_one_step(x, t, ret_states[i], conv_caches[i])
+        return x
+
+
+if __name__ == '__main__':
+    encoder = ConformerEncoder(
+        input_dim=80, encoder_dim=64, num_layers=2,
+        num_attention_heads=4, conv_kernel_size=7,
+        recurrent_chunk_size=10,
+    ).eval()
+
+    x = torch.randn(2, 50, 80)
+    with torch.no_grad():
+        out1 = encoder.forward(x)
+        out2 = encoder.forward_recurrent(x)
+
+    match = torch.allclose(out1, out2, atol=1e-5)
+    print(f"forward == forward_recurrent: {match}")
+    print(f"max diff: {(out1 - out2).abs().max().item():.2e}")

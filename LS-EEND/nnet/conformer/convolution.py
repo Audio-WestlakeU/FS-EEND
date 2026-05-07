@@ -14,6 +14,7 @@
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from torch import Tensor
 from typing import Tuple
 
@@ -149,6 +150,21 @@ class ConformerConvModule(nn.Module):
 
     def forward(self, inputs: Tensor) -> Tensor:
         return self.sequential(inputs).transpose(1, 2)
+
+    def forward_one_step(self, inputs: Tensor, cache: Tensor) -> Tuple[Tensor, Tensor]:
+        # inputs: (B, 1, D), cache: (B, D, kernel_size-1)
+        x = self.sequential[0](inputs).transpose(1, 2)  # LayerNorm + Transpose -> (B, D, 1)
+        x = self.sequential[2](x)   # PointwiseConv1d -> (B, 2D, 1)
+        x = self.sequential[3](x)   # GLU -> (B, D, 1)
+        x_padded = torch.cat([cache, x], dim=2)  # (B, D, kernel_size)
+        new_cache = x_padded[:, :, 1:]
+        dw_conv = self.sequential[4].conv
+        x = F.conv1d(x_padded, dw_conv.weight, dw_conv.bias, groups=dw_conv.groups)
+        x = self.sequential[5](x)   # BatchNorm1d
+        x = self.sequential[6](x)   # Swish
+        x = self.sequential[7](x)   # PointwiseConv1d
+        x = self.sequential[8](x)   # Dropout
+        return x.transpose(1, 2), new_cache
 
 
 class Conv2dSubampling(nn.Module):

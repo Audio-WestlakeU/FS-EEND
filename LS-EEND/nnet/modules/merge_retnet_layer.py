@@ -252,6 +252,29 @@ class TransformerEncoderFusionLayer(Module):
 
         return x
 
+    def forward_one_step(self, src: Tensor, t: int, ret_state: dict) -> Tensor:
+        # src: (B, 1, C, D)
+        B, _, C, D = src.shape
+        x = src.transpose(1, 2).reshape(B*C, 1, D)
+
+        x_in = self.norm11(x) if self.norm_first else x
+        yr = self.self_attn1(x=x_in, rel_pos=self.ret_pos1.forward(slen=t, activate_recurrent=True), incremental_state=ret_state)
+        if self.norm_first:
+            x = x + self.dropout11(yr)
+        else:
+            x = self.norm11(x + self.dropout11(yr))
+
+        x = x.reshape(B, C, 1, D).transpose(1, 2).reshape(B, C, D)
+
+        if self.norm_first:
+            x = x + self._sa_block2(self.norm21(x), None, None)
+            x = x + self._ff_block(self.norm22(x))
+        else:
+            x = self.norm21(x + self._sa_block2(x, None, None))
+            x = self.norm22(x + self._ff_block(x))
+
+        return x.unsqueeze(1)  # (B, 1, C, D)
+
     # self-attention block
     def _sa_block1(self, x: Tensor,
                   attn_mask: Optional[Tensor], key_padding_mask: Optional[Tensor]) -> Tensor:

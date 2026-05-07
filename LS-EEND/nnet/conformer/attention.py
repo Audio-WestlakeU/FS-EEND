@@ -110,3 +110,8 @@ class MultiHeadedSelfRetentionModule(nn.Module):
         # outputs = torch.concat(outputs, dim=1)
 
         return self.dropout(outputs)
+
+    def forward_one_step(self, x: Tensor, t: int, state: dict) -> Tensor:
+        x = self.layer_norm(x)
+        x = self.self_attn(x=x, rel_pos=self.ret_pos.forward(slen=t, activate_recurrent=True), incremental_state=state)
+        return self.dropout(x)
